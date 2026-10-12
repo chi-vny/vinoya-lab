@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Italiana", Georgia, serif;
+  --font-sans: "Jost", system-ui, sans-serif;
+  --color-night: #0f0a24;
+  --color-ink: #1b1535;
+  --color-paper: #f6f3ff;
+  --color-muted: #5f5a7d;
+  --color-line: #ddd6f3;
+  --color-violet-glow: #8b5cf6;
+  --color-magenta-glow: #d946ef;
+  --color-indigo-glow: #6366f1;
+  --color-mint-glow: #5eead4;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-violet-glow);
+  outline-offset: 3px;
+}
+
+/* Aurora: soft blurred color blobs that drift slowly */
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.55;
+  animation: aurora-drift 20s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes aurora-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(9vw, -7vh, 0) scale(1.2); }
+}
+
+/* Small bounce for the scroll hint in the hero */
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+.nudge { animation: nudge 2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .aurora-blob, .nudge { animation: none; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+/* Hero artwork: fades into the aurora background */
+.hero-fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 50%, transparent 100%);
+}
+@media (min-width: 1024px) {
+  .hero-fade {
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, #000 42%),
+      linear-gradient(to bottom, #000 72%, transparent 100%);
+    mask-image:
+      linear-gradient(to right, transparent 0%, #000 42%),
+      linear-gradient(to bottom, #000 72%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+}
